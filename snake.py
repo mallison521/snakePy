@@ -62,7 +62,9 @@ while not game_over:
     x1 += x1_change
     y1 += y1_change
     window.fill(white)
-    pygame.draw.rect(window, snake_green, [x1, y1, snake_block, snake_block])  # Draws a green square, in the center of the window
+
+    # Draws a green square in the center of the window
+    pygame.draw.rect(window, snake_green, [x1, y1, snake_block, snake_block])
 
     pygame.display.update()
 
