@@ -16,13 +16,21 @@ white = (255, 255, 255)
 snake_green = (10, 252, 123)
 red = (255, 0, 0)
 blue = (0, 0, 255)
+yellow = (255, 255, 102)
+black = (0, 0, 0)
 
 snake_block = 10
 snake_speed = 25
 
 clock = pygame.time.Clock()
 
-font_style = pygame.font.SysFont(None, 50)
+font_style = pygame.font.SysFont("bahnschrift", 25)
+score_font = pygame.font.SysFont("comicsansms", 35)
+
+
+def our_snake(snake_block, snake_list):
+    for x in snake_list:
+        pygame.draw.rect(window, snake_green, [x[0], x[1], snake_block, snake_block])
 
 
 def message(msg, color):
@@ -40,6 +48,9 @@ def gameLoop():
 
     x1_change = 0  # initialize to 0 for both variables
     y1_change = 0
+
+    snake_List = []
+    Length_of_snake = 1
 
     foodx = round(random.randrange(0, win_width - snake_block) / 10.0) * 10
     foody = round(random.randrange(0, win_length - snake_block) / 10.0) * 10
@@ -82,16 +93,29 @@ def gameLoop():
         x1 += x1_change
         y1 += y1_change
         window.fill(white)
-        # Draws a green square in the center of the window
-        pygame.draw.rect(window, snake_green, [x1, y1, snake_block, snake_block])
+
         # Draws food blocks randomly
         pygame.draw.rect(window, blue, [foodx, foody, snake_block, snake_block])
+
+        snake_Head = [x1, y1]
+        snake_List.append(snake_Head)
+        if len(snake_List) > Length_of_snake:
+            del snake_List[0]
+
+        for x in snake_List[:-1]:
+            if x == snake_Head:
+                game_close = True
+
+        our_snake(snake_block, snake_List)
 
         clock.tick(snake_speed)
         pygame.display.update()
 
         if int(x1) == foodx and int(y1) == foody:
-            print("Yummy!")
+            foodx = round(random.randrange(0, win_width - snake_block) / 10.0) * 10.0
+            foody = round(random.randrange(0, win_length - snake_block) / 10.0) * 10.0
+            Length_of_snake += 1
+
         clock.tick(snake_speed)
 
     # uninitialised all pygame modules
